@@ -33,10 +33,6 @@ function* getNext() {
 }
 const kvp_symbol = Symbol();
 function* getNextDesc() {
-    const keys = Object.keys(this).sort();
-    yield* loopThroughKeys.call(this, keys);
-}
-function* getNextAsc() {
     const keys = Object.keys(this).sort((a, b) => {
         if (a > b) {
             return -1;
@@ -45,6 +41,10 @@ function* getNextAsc() {
             return (a < b);
         }
     });
+    yield* loopThroughKeys.call(this, keys);
+}
+function* getNextAsc() {
+    const keys = Object.keys(this).sort();
     yield* loopThroughKeys.call(this, keys);
 }
 function* loopThroughKeys(keys) {

@@ -31,11 +31,6 @@ function* getNext(this: any): IterableIterator<string | IKeyValuePair> {
 const kvp_symbol = Symbol();
 
 function* getNextDesc(this: any): IterableIterator<string | IKeyValuePair> {
-    const keys = Object.keys(this).sort();
-    yield* loopThroughKeys.call(this, keys);
-}
-
-function* getNextAsc(this: any): IterableIterator<string | IKeyValuePair> {
     const keys = Object.keys(this).sort((a, b) => {
         if (a > b) {
             return -1;
@@ -43,6 +38,11 @@ function* getNextAsc(this: any): IterableIterator<string | IKeyValuePair> {
             return (a < b) as any;
         }
     });
+    yield* loopThroughKeys.call(this, keys);
+}
+
+function* getNextAsc(this: any): IterableIterator<string | IKeyValuePair> {
+    const keys = Object.keys(this).sort();
     yield* loopThroughKeys.call(this, keys);
 }
 
