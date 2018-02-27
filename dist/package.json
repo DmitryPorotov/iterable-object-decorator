@@ -1,0 +1,26 @@
+{
+  "name": "iterable-object-decorator",
+  "version": "1.0.0",
+  "description": "A decorator for objects to be used in \"for (... of ...)\" loops.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DmitryPorotov/iterable-object-decorator.git"
+  },
+  "keywords": [
+    "typescript",
+    "angular",
+    "decorator",
+    "iterable",
+    "*ngFor"
+  ],
+  "author": "Dmitry Porotov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DmitryPorotov/iterable-object-decorator/issues"
+  },
+  "homepage": "https://github.com/DmitryPorotov/iterable-object-decorator#readme"
+}
