@@ -17,35 +17,21 @@ class IterableObjectDecorator {
 }
 exports.IterableObjectDecorator = IterableObjectDecorator;
 function* getNext() {
-    for (const p in this) {
-        if (this.hasOwnProperty(p)) {
-            if (this[kvp_symbol]) {
-                yield {
-                    key: p,
-                    value: this[p]
-                };
-            }
-            else {
-                yield p;
-            }
-        }
-    }
+    yield* loopThroughKeys.call(this, Object.keys(this));
 }
 const kvp_symbol = Symbol();
 function* getNextDesc() {
-    const keys = Object.keys(this).sort((a, b) => {
+    yield* loopThroughKeys.call(this, Object.keys(this).sort((a, b) => {
         if (a > b) {
             return -1;
         }
         else {
             return (a < b);
         }
-    });
-    yield* loopThroughKeys.call(this, keys);
+    }));
 }
 function* getNextAsc() {
-    const keys = Object.keys(this).sort();
-    yield* loopThroughKeys.call(this, keys);
+    yield* loopThroughKeys.call(this, Object.keys(this).sort());
 }
 function* loopThroughKeys(keys) {
     for (let i = 0; i < keys.length; ++i) {
