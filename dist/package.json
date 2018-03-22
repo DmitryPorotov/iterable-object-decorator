@@ -1,6 +1,6 @@
 {
   "name": "iterable-object-decorator",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A decorator for objects to be used in \"for (... of ...)\" loops.",
   "main": "index.js",
   "scripts": {
