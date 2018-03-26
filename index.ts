@@ -1,3 +1,5 @@
+const kvp_symbol = Symbol();
+
 export class IterableObjectDecorator {
   public static decorate(obj: any, returnKvp?: boolean, dir?: 'desc' | 'asc'): any {
     obj[kvp_symbol] = !!returnKvp;
@@ -14,18 +16,18 @@ export class IterableObjectDecorator {
 }
 
 function* getNext(this: any): IterableIterator<string | IKeyValuePair> {
-  yield* loopThroughKeys.call(this, Object.keys(this));
+  if (this[kvp_symbol]) {
+    for (const k in this)
+      if (this.hasOwnProperty(k)) yield {key: k, value: this[k]};
+  } else
+    for (const k in this)
+      if (this.hasOwnProperty(k)) yield k;
 }
-
-const kvp_symbol = Symbol();
 
 function* getNextDesc(this: any): IterableIterator<string | IKeyValuePair> {
   yield* loopThroughKeys.call(this, Object.keys(this).sort((a, b) => {
-    if (a > b) {
-      return -1;
-    } else {
-      return (a < b) as any;
-    }
+    if (a > b) return -1;
+    else return (a < b) as any;
   }));
 }
 
@@ -34,16 +36,10 @@ function* getNextAsc(this: any): IterableIterator<string | IKeyValuePair> {
 }
 
 function* loopThroughKeys(this: any, keys: string[]): IterableIterator<string | IKeyValuePair> {
-  for (let i = 0; i < keys.length; ++i) {
-    if (this[kvp_symbol]) {
-      yield {
-        key: keys[i],
-        value: this[keys[i]]
-      };
-    } else {
-      yield keys[i];
-    }
-  }
+  if (this[kvp_symbol])
+    for (const k of keys) yield {key: k, value: this[k]};
+  else
+    for (const k of keys) yield k;
 }
 
 export function Iterable(returnKvp?: boolean, dir?: 'desc' | 'asc'): (target: any, propertyKey: string) => void {

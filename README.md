@@ -14,12 +14,12 @@ Import `Iterable` decorator and use it on component properties. Or import `Itera
 
 **For the `@Iterable()` class property decorator**:
 
-1. **_returnKvp?: boolean_** - an optional parameter that indicates that the iterator will return key-value pairs. A key-value pair is an object which look like this: `{key:"some string", value: "value of any type"}`. If this parameter is not provided or `false` then only the key will be returned.
+1. **_returnKvp?: boolean_** - an optional parameter that indicates that the iterator will return key-value pairs. A key-value pair is an object which look like this: `{key:"some string", value: "value of any type"}`. If this parameter is not provided or is `false` then only the key is returned.
 2. **_dir?: 'desc' | 'asc'_** - an optional parameter that indicates the direction of sorting. If no direction is provided then keys are returned unsorted.
 
-**For the `IterableObjectDecorator.decorate` static function**:
+**For the `IterableObjectDecorator.decorate()` static function**:
 
-The first parameter is the object to be decorated then the 2 other parameters are the same as for `@Iterable`. The function returns back the decorated object.
+The first parameter is the object to be decorated then the 2 other parameters are the same as for `@Iterable()`. The function returns back the decorated object.
 
 ### Example:
 ```typescript

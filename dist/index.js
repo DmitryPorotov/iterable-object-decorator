@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const kvp_symbol = Symbol();
 class IterableObjectDecorator {
     static decorate(obj, returnKvp, dir) {
         obj[kvp_symbol] = !!returnKvp;
@@ -17,34 +18,34 @@ class IterableObjectDecorator {
 }
 exports.IterableObjectDecorator = IterableObjectDecorator;
 function* getNext() {
-    yield* loopThroughKeys.call(this, Object.keys(this));
+    if (this[kvp_symbol]) {
+        for (const k in this)
+            if (this.hasOwnProperty(k))
+                yield { key: k, value: this[k] };
+    }
+    else
+        for (const k in this)
+            if (this.hasOwnProperty(k))
+                yield k;
 }
-const kvp_symbol = Symbol();
 function* getNextDesc() {
     yield* loopThroughKeys.call(this, Object.keys(this).sort((a, b) => {
-        if (a > b) {
+        if (a > b)
             return -1;
-        }
-        else {
+        else
             return (a < b);
-        }
     }));
 }
 function* getNextAsc() {
     yield* loopThroughKeys.call(this, Object.keys(this).sort());
 }
 function* loopThroughKeys(keys) {
-    for (let i = 0; i < keys.length; ++i) {
-        if (this[kvp_symbol]) {
-            yield {
-                key: keys[i],
-                value: this[keys[i]]
-            };
-        }
-        else {
-            yield keys[i];
-        }
-    }
+    if (this[kvp_symbol])
+        for (const k of keys)
+            yield { key: k, value: this[k] };
+    else
+        for (const k of keys)
+            yield k;
 }
 function Iterable(returnKvp, dir) {
     return function (target, propertyKey) {
