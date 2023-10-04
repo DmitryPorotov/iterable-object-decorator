@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Iterable = exports.decorateIterableObject = void 0;
 const kvp_symbol = Symbol();
-function decorateIterableObject(obj, returnKvp, dir) {
+function decorateIterableObject(obj, dir, returnKvp) {
     obj[kvp_symbol] = !!returnKvp;
     if (!dir) {
         obj[Symbol.iterator] = getNext;
@@ -19,7 +20,7 @@ function* getNext() {
     if (this[kvp_symbol]) {
         for (const k in this)
             if (this.hasOwnProperty(k))
-                yield new KeyValuePair(k, this[k]);
+                yield { key: k, value: this[k] };
     }
     else
         for (const k in this)
@@ -40,32 +41,22 @@ function* getNextAsc() {
 function* loopThroughKeys(keys) {
     if (this[kvp_symbol])
         for (const k of keys)
-            yield new KeyValuePair(k, this[k]);
+            yield { key: k, value: this[k] };
     else
         for (const k of keys)
             yield k;
 }
-function Iterable(returnKvp, dir) {
+function Iterable(dir, returnKvp) {
     return function (target, propertyKey) {
         const s = Symbol();
         Object.defineProperty(target.constructor.prototype, propertyKey, {
-            set: function (val) {
-                this[s] = decorateIterableObject(val, returnKvp, dir);
+            set(val) {
+                this[s] = decorateIterableObject(val, dir, returnKvp);
             },
-            get: function () {
+            get() {
                 return this[s];
             }
         });
     };
 }
 exports.Iterable = Iterable;
-class KeyValuePair {
-    constructor(key, value) {
-        this.key = key;
-        this.value = value;
-    }
-    toString() {
-        return this.key;
-    }
-}
-exports.KeyValuePair = KeyValuePair;

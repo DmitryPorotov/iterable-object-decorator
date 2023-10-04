@@ -43,10 +43,10 @@ export function Iterable(dir?: 'desc' | 'asc', returnKvp?: boolean): (target: an
   return function (this: any, target: any, propertyKey: string): void {
     const s = Symbol();
     Object.defineProperty(target.constructor.prototype, propertyKey, <PropertyDescriptor>{
-      set: function (this: any, val: any): void {
+      set(this: any, val: any): void {
         this[s] = decorateIterableObject(val, dir, returnKvp);
       },
-      get: function (this: any): any {
+      get(this: any): any {
         return this[s];
       }
     });

@@ -1,4 +1,9 @@
-# Chenge log
+# Change log
+
+### v2.0.1
+
+ 1. Removed redundant keyword `function` in the getter and the setter
+ 2. Compiled to es2022.
 
 ### v2.0.0
 
